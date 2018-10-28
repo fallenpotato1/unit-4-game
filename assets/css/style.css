@@ -1,0 +1,120 @@
+html {
+    background: url("../images/falloutMask.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+  }
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    color: rgb(0, 255, 64);
+    display: inline;
+    margin-right: 3%;
+    background: black;
+    padding: 1%;
+    border-radius: 25px;
+    opacity: .6;
+}
+
+.top {
+    height: 10%;
+    width: 100%;
+    text-align: right;
+    color: rgb(0, 255, 64);
+}
+
+.fullGameplay {
+    display: flex;
+    flex-direction: row;
+    height: 90%;
+    width: 100%;
+}
+
+
+.centerPiece {
+    width: 80%;
+    height: 100%;
+}
+
+.emptyRight {
+    width: 20%;
+    height: 100%
+}
+
+
+.topPiece {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.bottomPiece {
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+}
+
+.character {
+    height: 200px;
+    width: 200px;
+    position: relative;
+    margin-right: 5px;
+}
+
+.glowingOne {
+    background: url("../images/glowingOne.jpg") no-repeat center center;
+    height: 200px;
+    width: 200px;
+    border: rgb(0, 255, 64) 2px solid;
+}
+
+.libertyPrime {
+    background: url("../images/libertyPrime.jpg") no-repeat center center;
+    height: 200px;
+    width: 200px;
+    border: rgb(0, 255, 64) 2px solid;
+}
+
+.alduin {
+    background: url("../images/alduin.jpg") no-repeat center center;
+    height: 200px;
+    width: 200px;
+    border: rgb(0, 255, 64) 2px solid;
+}
+
+.nothing {
+    height: 200px;
+    width: 200px;
+}
+
+.character h3 {
+    color: rgb(0, 255, 64);
+    position: absolute;
+    top: 150px;
+    left: 20px
+}
+
+h3 {
+    color: rgb(0, 255, 64);
+}
+
+h2 {
+    color: rgb(0, 255, 64);
+    position: absolute;
+    left: 25px;
+    top: 50px;
+}
+
+.character button {
+    border: rgb(0, 255, 64) 1px solid;
+    background-color: black;
+    color: rgb(0, 255, 64);
+    height: 30%;
+    width: 100%;
+    position: relative;
+    top: 75px;
+}
