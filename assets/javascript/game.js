@@ -25,18 +25,12 @@ $(document).ready(function () {
         alduinHealth = characters.eachCharacter.alduin.health
         glowingOneHealth = characters.eachCharacter.glowingOne.health
         libertyPrimeHealth = characters.eachCharacter.libertyPrime.health
-        console.log(alduinHealth)
-        console.log(characters.eachCharacter.alduin.damage)
         $(".alduin h2").remove()
         $(".libertyPrime h2").remove()
         $(".glowingOne h2").remove()
         $(".alduin").append("<h2 class='aHealth'>" + alduinHealth + "</h2>")
         $(".libertyPrime").append("<h2 class='lpHealth'>" + libertyPrimeHealth + "</h2>")
         $(".glowingOne").append("<h2 class='goHealth'>" + glowingOneHealth + "</h2>")
-        isStarted = false
-        choseAlduin = false
-        choseLibertyPrime = false
-        choseGlowingOne = false
         $(".glowingOne").show()
         $(".libertyPrime").show()
         $(".alduin").show()
@@ -47,9 +41,6 @@ $(document).ready(function () {
     var glowingOneHealth = characters.eachCharacter.glowingOne.health
     var libertyPrimeHealth = characters.eachCharacter.libertyPrime.health
 
-    const alduinDamage = characters.eachCharacter.alduin.damage
-    const glowingOneDamage = characters.eachCharacter.glowingOne.damage
-    const libertyPrimeDamage = characters.eachCharacter.libertyPrime.damage
 
 
     $(".alduin").append("<h2 class='aHealth'>" + alduinHealth + "</h2>")
@@ -78,16 +69,38 @@ $(document).ready(function () {
         }
     }
 
+
+
+
+
+
+
+
+
     function startGame() {
+        choseAlduin = false
+        choseLibertyPrime = false
+        choseGlowingOne = false
+        isStarted = false
+        var alduinHealth = 400
+        var glowingOneHealth = 200
+        var libertyPrimeHealth = 300
         $(".theButton").hide()
+
+
         $(".alduin").on("click", function () {
-            if (isStarted === false && choseAlduin === false) {
+            const alduinDamage = 30
+            const glowingOneDamage = 100
+            const libertyPrimeDamage = 50
+
+            if (isStarted === false && choseGlowingOne === false && choseLibertyPrime === false) {
                 $(".bottomPiece").append($(".libertyPrime"))
                 $(".bottomPiece").append($(".glowingOne"))
                 isStarted = true
                 choseAlduin = true
                 alduinDefender()
             }
+
             function alduinDefender() {
                 if (isStarted === true && choseAlduin === true) {
                     $(".glowingOne").on("click", function () {
@@ -95,100 +108,179 @@ $(document).ready(function () {
                         $(".theButton").show()
                         $(".theButton").addClass("shoutButton")
                         $(".shoutButton").text("Breath Fire")
-                        defendGlowingOne = true
-                        alduinAttack()
+                        alduinAttack(false, true)
                     })
                     $(".libertyPrime").on("click", function () {
                         $(".emptyRight").append(this)
-                        $(".theButton").show()
+                        $(".shoutButton").show()
                         $(".theButton").addClass("shoutButton")
-                        $(".shoutButton").text("Breath Fire")
-                        defendLibertyPrime = true
-                        alduinAttack()
+                        $(".shoutButton").text("Shout Fire")
+                        alduinAttack(true, false)
                     })
                 }
             }
 
-            
+            function alduinAttack(first, second) {
+                if (first === true && second === false) {
+                    alduinLiberty()
+                } else if (first === false && second === true) {
+                    alduinGlowingOne()
+                }
+            }
 
             function alduinLiberty() {
-                alduinsHealth = alduinsHealth - libertyPrimeDamage
-                libertyPrimesHealth = libertyPrimesHealth - alduinDamage
-                if (alduinsHealth <= 0) {
-                    aLoss()
-                    alduinsHealth = 400
-                    libertyPrimesHealth = 300
-                    defendLibertyPrime = false
-                } else if (libertyPrimesHealth <= 0) {
-                    aWin()
-                    alduinsHealth = 400
-                    libertyPrimesHealth = 300
-                }
-                updateStuff(alduinsHealth, libertyPrimesHealth, glowingOneHealth)
-                alduinAttack()
+                var alduinsHealth = alduinHealth
+                var libertyPrimesHealth = libertyPrimeHealth
+                $(".shoutButton").on("click", function () {
+                    alduinsHealth = alduinsHealth - libertyPrimeDamage
+                    libertyPrimesHealth = libertyPrimesHealth - alduinDamage
+                    updateStuff(alduinsHealth, libertyPrimesHealth, glowingOneHealth)
+                    if (alduinsHealth <= 0) {
+                        aLoss()
+                        alduinsHealth = 400
+                        libertyPrimesHealth = 200
+                    }
+                })
             }
-
-            var alduinsHealth = alduinHealth
-            var glowingOnesHealth = glowingOneHealth
 
             function alduinGlowingOne() {
-                
-                alduinsHealth = alduinsHealth - glowingOneDamage
-                glowingOnesHealth = glowingOnesHealth - alduinDamage
-                if (alduinsHealth <= 0) {
-                    aLoss()
-                    alduinsHealth = 400
-                    glowingOnesHealth = 200
-                } else if (glowingOnesHealth <= 0) {
-                    $(".glowingOne").hide()
-                    $(".emptyRight").append($(".libertyPrime"))
-                    defendGlowingOne = false
-                    defendLibertyPrime = true
-                } else {
-                    alduinAttack()
-                }
-                updateStuff(alduinsHealth, libertyPrimeHealth, glowingOnesHealth)
+                var alduinsHealth = alduinHealth
+                var glowingOnesHealth = glowingOneHealth
+                $(".shoutButton").on("click", function () {
+                    alduinsHealth = alduinsHealth - glowingOneDamage
+                    glowingOnesHealth = glowingOnesHealth - alduinDamage
+                    updateStuff(alduinsHealth, libertyPrimeHealth, glowingOnesHealth)
+                    if (alduinsHealth <= 0) {
+                        aLoss()
+                        alduinsHealth = 400
+                        glowingOnesHealth = 200
+                    }
+                })
             }
-            function alduinAttack() {
 
-                if (defendLibertyPrime === true && defendGlowingOne === false) {
-                    $(".shoutButton").on("click", alduinLiberty())
-                } else if (defendGlowingOne === true && defendLibertyPrime === false) {
-                    $(".shoutButton").on("click", alduinGlowingOne())
-                }
-
-            }
+            var lostTimes = 0
             function aLoss() {
-                $(".nothing").append("<h1 class='lost'>You lost</h2>")
-                $(".theButton").hide()
-                $(".thebutton").removeClass(".shoutButton")
-                $(".nothing").append("<button class='resetButton'>Reset</button>")
-                $(".resetButton").on("click", function () {
-                    $(".topPiece").prepend($(".alduin"))
-                    $(".topPiece").prepend($(".libertyPrime"))
-                    $(".topPiece").prepend($(".glowingOne"))
+                if (lostTimes === 0) {
+                    $(".nothing").append("<h1 class='lost'>You lost</h2>")
+                    $(".theButton").hide()
+                    $(".thebutton").removeClass(".shoutButton")
+                    $(".nothing").append("<button class='resetButton'>Reset</button>")
+                    $(".resetButton").on("click", function () {
+                        $(".topPiece").prepend($(".alduin"))
+                        $(".topPiece").prepend($(".libertyPrime"))
+                        $(".topPiece").prepend($(".glowingOne"))
+                        $(".resetButton").hide()
+                        $(".lost").hide()
+                        resetStats()
+                        lostTimes++
+                    })
+                } else {
                     $(".resetButton").hide()
                     $(".lost").hide()
                     resetStats()
-                })
-            }
-
-            function secondLoss() {
-                $(".lose").show()
-                $(".theButton").show()
-                $(".thebutton").removeClass(".shoutButton")
-                $(".resetButton").show()
-                $(".resetButton").on("click", function () {
-                    $(".topPiece").prepend($(".alduin"))
-                    $(".topPiece").prepend($(".libertyPrime"))
-                    $(".topPiece").prepend($(".glowingOne"))
-                    $(".resetButton").hide()
-                    $(".lost").hide()
-                    resetStats()
-                })
+                }
             }
         })
+
+
+        $(".libertyPrime").on("click", function () {
+            const alduinDamage = 100
+            const glowingOneDamage = 100
+            const libertyPrimeDamage = 30
+
+            if (isStarted === false && choseGlowingOne === false && choseAlduin === false) {
+                $(".bottomPiece").append($(".alduin"))
+                $(".bottomPiece").append($(".glowingOne"))
+                isStarted = true
+                choseLibertyPrime = true
+                libertyDefender()
+            }
+
+            function libertyDefender() {
+                if (isStarted === true && choseLibertyPrime === true) {
+                    $(".glowingOne").on("click", function () {
+                        $(".emptyRight").append(this)
+                        $(".theButton").show()
+                        $(".theButton").addClass("throwNuke")
+                        $(".throwNuke").text("Throw Nuke")
+                        libertyAttack(false, true)
+                    })
+                    $(".alduin").on("click", function () {
+                        $(".emptyRight").append(this)
+                        $(".theButton").show()
+                        $(".theButton").addClass("throwNuke")
+                        $(".throwNuke").text("Throw Nuke")
+                        libertyAttack(true, false)
+                    })
+                }
+            }
+
+            function libertyAttack(first, second) {
+                if (first === true && second === false) {
+                    libertyAlduin()
+                } else if (first === false && second === true) {
+                    libertyGlowingOne()
+                }
+            }
+
+            function libertyAlduin() {
+                var alduinsHealth = alduinHealth
+                var libertyPrimesHealth = libertyPrimeHealth
+                $(".throwNuke").on("click", function () {
+                    alduinsHealth = alduinsHealth - libertyPrimeDamage
+                    libertyPrimesHealth = libertyPrimesHealth - alduinDamage
+                    updateStuff(alduinsHealth, libertyPrimesHealth, glowingOneHealth)
+                    if (libertyPrimesHealth <= 0) {
+                        aLoss()
+                        libertyPrimesHealth = 300
+                        libertyPrimesHealth = 200
+                    }
+                })
+            }
+
+            function libertyGlowingOne() {
+                var libertyPrimesHealth = libertyPrimeHealth
+                var glowingOnesHealth = glowingOneHealth
+                $(".throwNuke").on("click", function () {
+                    libertyPrimesHealth = libertyPrimesHealth - glowingOneDamage
+                    glowingOnesHealth = glowingOnesHealth - libertyPrimeDamage
+                    updateStuff(alduinHealth, libertyPrimesHealth, glowingOnesHealth)
+                    if (libertyPrimesHealth <= 0) {
+                        aLoss()
+                        libertyPrimesHealth = 300
+                        glowingOnesHealth = 200
+                    }
+                })
+            }
+
+            var lostTimes = 0
+            function aLoss() {
+                if (lostTimes === 0) {
+                    $(".nothing").append("<h1 class='lost'>You lost</h2>")
+                    $(".theButton").hide()
+                    $(".thebutton").removeClass(".throwNuke")
+                    $(".nothing").append("<button class='resetButton'>Reset</button>")
+                    $(".resetButton").on("click", function () {
+                        $(".topPiece").prepend($(".alduin"))
+                        $(".topPiece").prepend($(".libertyPrime"))
+                        $(".topPiece").prepend($(".glowingOne"))
+                        $(".resetButton").hide()
+                        $(".lost").hide()
+                        resetStats()
+                        lostTimes++
+                    })
+                } else {
+                    $(".resetButton").hide()
+                    $(".lost").hide()
+                }
+            }
+        })
+
+
     }
+
+
+
     startGame()
 
 
